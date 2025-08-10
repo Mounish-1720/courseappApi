@@ -1,9 +1,8 @@
+// /api/get-courses.js
 import snowflake from 'snowflake-sdk';
 
-export default function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Only GET requests allowed' });
-  }
+export default async function handler(req, res) {
+  console.log("API called");
 
   const connection = snowflake.createConnection({
     account: process.env.SNOWFLAKE_ACCOUNT,
@@ -15,20 +14,27 @@ export default function handler(req, res) {
     region: process.env.SNOWFLAKE_REGION,
   });
 
-  connection.connect((err) => {
+  connection.connect((err, conn) => {
     if (err) {
+      console.error("Unable to connect: " + err.message);
       return res.status(500).json({ error: err.message });
     }
 
+    console.log("Connected to Snowflake");
+
     connection.execute({
-      sqlText: 'SELECT * FROM courses ORDER BY created_at DESC',
-      complete: (err, stmt, rows) => {
-        connection.destroy();
+      sqlText: `SELECT * FROM COURSES;`,
+      complete: function (err, stmt, rows) {
         if (err) {
+          console.error("Failed to execute query: " + err.message);
           return res.status(500).json({ error: err.message });
         }
+
+        // ✅ Send result and close connection
         res.status(200).json(rows);
-      }
+
+        connection.destroy(); // Important! Close connection
+      },
     });
   });
 }
