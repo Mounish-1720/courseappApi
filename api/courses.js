@@ -15,7 +15,11 @@ module.exports = function handler(req, res) {
     schema: process.env.SNOWFLAKE_SCHEMA,
     role: process.env.SNOWFLAKE_ROLE
   });
-
+console.log('ENV VARIABLES:', {
+  SNOWFLAKE_USER: process.env.SNOWFLAKE_USER,
+  SNOWFLAKE_ACCOUNT: process.env.SNOWFLAKE_ACCOUNT,
+  SNOWFLAKE_PASSWORD: process.env.SNOWFLAKE_PASSWORD
+});
   connection.connect((err) => {
     if (err) {
       console.error('❌ Snowflake connection error:', err.message);
