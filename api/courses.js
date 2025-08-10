@@ -8,9 +8,7 @@ module.exports = function handler(req, res) {
 
   const connection = snowflake.createConnection({
     account: process.env.SNOWFLAKE_ACCOUNT,
-    username: process.env.SNOWFLAKE_USER,
-    password: process.env.SNOWFLAKE_PASSWORD,
-    warehouse: process.env.SNOWFLAKE_WAREHOUSE,
+    username: process.env.SNOWFLAKE_USERNAME,
     database: process.env.SNOWFLAKE_DATABASE,
     schema: process.env.SNOWFLAKE_SCHEMA,
     role: process.env.SNOWFLAKE_ROLE
